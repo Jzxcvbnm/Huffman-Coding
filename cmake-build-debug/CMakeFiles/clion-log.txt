@@ -1,0 +1,4 @@
+"E:\Clion\CLion 2021.3.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=E:/Clion/CLion 2021.3.4/bin/ninja/win/ninja.exe" -G Ninja E:\MyClion\HuffmanTree
+-- Configuring done
+-- Generating done
+-- Build files have been written to: E:/MyClion/HuffmanTree/cmake-build-debug
