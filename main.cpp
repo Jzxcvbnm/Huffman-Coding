@@ -3,12 +3,9 @@
 #include"HuffmanTree.h"
 #include"method.h"
 
-Huffman myHuffman;//设置为全局变量，避免离开函数作用域后消亡
-
 int main()
 {
     char option='0';
-    bool done=false;
 
     cout<<"操作命令说明："<<endl;
     cout<<"统计输入文件字符频度并对字符集编括码并输出至文件（基本要求）： 1"<<endl;
@@ -24,29 +21,15 @@ int main()
             switch(option) {
                 //基本要求，输入文件，统计，编码字符集并输出
                 case '1':
-                {
-                    init(myHuffman);
-                    char_code(myHuffman);
-                    done=true;
+                    init();
                     break;
-                }
                 //中级要求，编括码整个文件并保存至一个二进制文件
                 case '2':
-                    if(done){
-                        File_Encode(myHuffman);
-                    }
-                    else{
-                        printf("尚未建立编码表！\n");
-                    }
+                    File_Encode();
                     break;
                 //高级要求，解码并保存解码结果到一个文本文件，以便与原始的文件作对比
                 case '3':
-                    if(done){
-                        File_Decode(myHuffman);
-                    }
-                    else{
-                        printf("尚未建立编码表!\n");
-                    }
+                    File_Decode();
                     break;
                 case'4':
                     break;

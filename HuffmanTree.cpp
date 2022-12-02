@@ -44,13 +44,6 @@ bool Huffman::IsLeaf(HFTNode* Root)
         return false;
 }
 
-//获取当前的权重数组
-void Huffman::GetFreq(vector<int> &des)
-{
-    for (int i = 0; i < freq.size(); i++)
-        des.push_back(freq[i]);
-}
-
 //构建一颗哈夫曼树
 void Huffman::BuildTree()
 {
@@ -88,25 +81,6 @@ void Huffman::BuildCode()
     string temp;
     temp.clear();//初始化为空字符串
     _build(Root, temp);
-}
-
-//遍历编码表和编码表对应的编码
-void Huffman::GetCodeList()
-{
-    for (const auto& pair : map)
-        cout << pair.first << ": " << pair.second << endl;
-}
-
-void Huffman::PreOrder()
-{
-    if (Root == nullptr) return;
-    _PreOrder(Root);
-}
-
-void Huffman::InOrder()
-{
-    if (Root == nullptr) return;
-    _InOrder(Root);
 }
 
 //解压缩
@@ -151,23 +125,6 @@ string Huffman::Compress(const string& sample)
         res += map[sample[i]];
     }
     return res;
-}
-
-void Huffman::_PreOrder(HFTNode* root)
-{
-    if (root == nullptr) return;
-    cout << root->ch << " :" << root->weight << endl;
-    _PreOrder(root->leftchild);
-    _PreOrder(root->rightchild);
-}
-
-
-void Huffman::_InOrder(HFTNode* root)
-{
-    if (root == nullptr) return;
-    _InOrder(root->leftchild);
-    cout << root->ch << " :" << root->weight << endl;
-    _InOrder(root->rightchild);
 }
 
 //删除哈夫曼树
