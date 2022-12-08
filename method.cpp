@@ -29,7 +29,12 @@ void init()
     cout << "请输入文件名：";
     string filename;//输入文件名
     cin >> filename;
-    ifstream ifile(filename);//ofstream是从内存到硬盘，ifstream是从硬盘到内存，其实所谓的流缓冲就是内存空间
+    ifstream ifile;//ofstream是从内存到硬盘，ifstream是从硬盘到内存，其实所谓的流缓冲就是内存空间
+    ifile.open(filename);
+    if (ifile.fail()) {
+        cout<< "不能打开文件:" << filename;
+        exit(-1);
+    }
     ostringstream filebuf;//将文件读入到ostringstream对象filebuf中
     char tempch;
 
@@ -67,37 +72,37 @@ void init()
 void File_Decode()
 {
     string codefilename;
-    cout<<"请输入所需要的编码表文件名：";
-    cin>>codefilename;
-    string freqstring= readFreqString(codefilename);
+    cout << "请输入所需要的编码表文件名：";
+    cin >> codefilename;
+    string freqstring = readFreqString(codefilename);
     //建立新树
     Huffman newHuffman(freqstring);
     newHuffman.BuildTree();
     newHuffman.BuildCode();
 
-    string des;
+    string des;//读取的编码字符串
     des.clear();
     cout << "请输入要解压的文件名：";
     string decode_filename;//输入要解压的二进制文件名
     cin >> decode_filename;
-    infp.open(decode_filename,ios::binary);//将文件与infp关联
+    infp.open(decode_filename, ios::binary);//将文件与infp关联
 
     //计算cnt
-    string codelength=newHuffman.Compress(freqstring);
-    cnt=codelength.size();
+    string codelength = newHuffman.Compress(freqstring);
+    cnt = codelength.size();
 
-    buf={0,0};//每次编码前都要初始化，不然重复输入文件后必会有编码错误
+    buf = { 0,0 };//每次编码前都要初始化，不然重复输入文件后必会有编码错误
     for (int i = 0; i < cnt; ++i) {
         unsigned int r = 0;//存储读取字符的变量
         Read(r);
-        char cur=r+'0';
-        des+=cur;
+        char cur = r + '0';
+        des += cur;
     }
     infp.close();
 
-    string temp;
+    string temp;//存放解码结果
     temp.clear();
-    temp=newHuffman.Expend(des);
+    temp = newHuffman.Expend(des);
 
     cout << "请输入保存解压结果的文件名：";
     string result_filename;//输入要解压的二进制文件名
@@ -141,7 +146,12 @@ void File_Encode()
     cout << "请输入要压缩的文件名：";
     string filename;//输入文件名
     cin >> filename;
-    ifstream ifile(filename);//ofstream是从内存到硬盘，ifstream是从硬盘到内存，其实所谓的流缓冲就是内存空间
+    ifstream ifile;//ofstream是从内存到硬盘，ifstream是从硬盘到内存，其实所谓的流缓冲就是内存空间
+    ifile.open(filename);
+    if (ifile.fail()) {
+        cout<< "不能打开文件:" << filename;
+        exit(-1);
+    }
     ostringstream filebuf;//将文件读入到ostringstream对象filebuf中
     char tempch;
 
@@ -178,69 +188,86 @@ void File_Encode()
 // 1.输入文件名，找到频度文件，转化成AAABBB
 string readFreqString(const string& codefilename)
 {
-    string freqstring;
-    freqstring.clear();
-    ifstream codefile(codefilename);
-    char curch;
-    char prech;
-    string temp;//存储字符或数字
-    temp.clear();
+//    string freqstring;
+//    freqstring.clear();
+//    ifstream codefile;//ofstream是从内存到硬盘，ifstream是从硬盘到内存，其实所谓的流缓冲就是内存空间
+//    codefile.open(codefilename);
+//    if (codefile.fail()) {
+//        cout<< "不能打开文件:" << codefilename;
+//        exit(-1);
+//    }
+//    char curch;
+//    char prech;
+//    string temp;//存储字符或数字
+//    temp.clear();
+//
+//    //读取编码表
+//    int comma_cnt=0;
+//    bool now_num=false;
+//    for (int i=0 ; codefile.get(curch); ++i) {
+//        //遇到逗号时处理之前的缓存
+//        if(curch==','){
+//            //判断逗号
+//            comma_cnt++;
+//            if(comma_cnt==2){
+//                temp+=curch;
+//                comma_cnt=0;
+//                now_num=false;
+//                continue;
+//            }
+//
+//            //处理数字
+//            if(now_num) {
+//                stringstream string_num;
+//                string_num << temp;
+//                int tempn = 0;
+//                string_num >> tempn;
+//                for (int j = 0; j < tempn; ++j) {
+//                    freqstring += prech;
+//                }
+//                string_num.clear();
+//                temp.clear();
+//                now_num=false;
+//            }
+//
+//            //处理字符
+//            else{
+//                char tempch=temp[0];
+//                prech=tempch;
+//                temp.clear();
+//                now_num=true;
+//            }
+//        }
+//
+//        //缓存逗号前的字符
+//        else{
+//            temp+=curch;
+//            comma_cnt=0;
+//        }
+//
+//    }
+//
+//    return freqstring;
 
-    //读取编码表
-    int comma_cnt=0;
-    bool now_num=false;
-    for (int i=0 ; codefile.get(curch); ++i) {
-        //遇到逗号时处理之前的缓存
-        if(curch==','){
-            //判断逗号
-            comma_cnt++;
-            if(comma_cnt==2){
-                temp+=curch;
-                comma_cnt=0;
-                now_num=false;
-                continue;
-            }
-
-            //处理数字
-            if(now_num) {
-                stringstream string_num;
-                string_num << temp;
-                int tempn = 0;
-                string_num >> tempn;
-                for (int j = 0; j < tempn; ++j) {
-                    freqstring += prech;
-                }
-                string_num.clear();
-                temp.clear();
-                now_num=false;
-            }
-
-            //处理字符
-            else{
-                char tempch=temp[0];
-                prech=tempch;
-                temp.clear();
-                now_num=true;
+    string out;
+    FILE* fp;
+    if ((fp = fopen(codefilename.c_str(), "r+")) == NULL) {
+        printf("打开频数文件失败！\n");
+        exit(-1);
+    }
+    else {
+        char ch1 = 0;
+        int num1 = 0;
+        string str_temp = "";
+        while (fscanf(fp, "%c,%d,", &ch1, &num1) != -1) {
+            str_temp = ch1;
+            for (int i = 0; i < num1; i++) {
+                out.append(str_temp);
             }
         }
-
-        //缓存逗号前的字符
-        else{
-            temp+=curch;
-            comma_cnt=0;
-        }
-
     }
-    //读入最后一位字符及频率（文件末无法判断）
-    stringstream string_num;
-    string_num<<temp;
-    int n=0;
-    string_num>>n;
-    for (int j = 0; j < n; ++j) {
-        freqstring+=prech;
-    }
-
-    return freqstring;
+    fclose(fp);
+    return out;
 }
 
 //基本要求，输入文件，统计，编码字符集并输出
@@ -330,11 +357,11 @@ double compression_ratio(int num,Huffman &newhuffman)
     double freq_sum=0;
     double digit_sum=0;
     for (const auto& pair : newhuffman.mymap) {
-        //unordered_map<char, int>::const_iterator pair
+        //unordered_mymap<char, int>::const_iterator pair
         freq_sum+=pair.second;
     }
     for (const auto& pair : newhuffman.map) {
-        //unordered_map<char, int>::const_iterator pair
+        //unordered_map<char, string>::const_iterator pair
         digit_sum+=pair.second.size()*newhuffman.mymap[pair.first];
     }
     present_digit=digit_sum/freq_sum;

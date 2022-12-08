@@ -1,23 +1,23 @@
 //
-// Created by ç»«æ³¢çœŸç¾ä¸½ on 2022/11/21.
+// Created by ç±²¨ÕæÃÀÀö on 2022/11/21.
 //
 
 #include "HuffmanTree.h"
 
-//ä¾æ®å­—ç¬¦ä¸²ç”Ÿæˆç¼–ç è¡¨ä»¥åŠæƒé‡æ•°ç»„
+//ÒÀ¾İ×Ö·û´®Éú³É±àÂë±íÒÔ¼°È¨ÖØÊı×é
 Huffman::Huffman(const string &sample)
 {
     int len = sample.length();
-    if (len == 0) { cout << "è¯·é‡æ–°è¾“å…¥å­—ç¬¦ä¸²" << endl; exit(-1); }
+    if (len == 0) { cout << "³õÊ¼»¯Ê§°Ü£¬ÇëÖØĞÂÊäÈë×Ö·û´®£¡" << endl; exit(-1); }
 
-    for (int i = 0; i < len; ++i) {//ä¾æ®è¾“å…¥å­—ç¬¦ä¸²åˆå§‹åŒ–å“ˆå¸Œè¡¨
+    for (int i = 0; i < len; ++i) {//ÒÀ¾İÊäÈë×Ö·û´®³õÊ¼»¯¹şÏ£±í
         if (mymap.find(sample[i]) == mymap.end())
-            //æ’å…¥æ˜ å°„
+            //²åÈëÓ³Éä
             mymap[sample[i]] = 1;
         else
-            mymap[sample[i]] += 1;//é¢‘æ•°++
+            mymap[sample[i]] += 1;//ÆµÊı++
     }
-    for (const auto& pair : mymap) {//éå†å“ˆå¸Œè¡¨ï¼Œå¹¶å°†keyä¸valueåˆ†åˆ«å‹å…¥ç¼–ç è¡¨ä¸é¢‘ç‡æ•°ç»„ä¸­
+    for (const auto& pair : mymap) {//±éÀú¹şÏ£±í£¬²¢½«keyÓëvalue·Ö±ğÑ¹Èë±àÂë±íÓëÆµÂÊÊı×éÖĞ
         //unordered_map<char, int>::const_iterator pair
         st.push_back(pair.first);
         freq.push_back(pair.second);
@@ -28,13 +28,13 @@ Huffman::Huffman() {
 
 }
 
-//ææ„å‡½æ•°
+//Îö¹¹º¯Êı
 Huffman::~Huffman()
 {
-    _del(Root);//éå†å“ˆå¤«æ›¼æ ‘
+    _del(Root);//±éÀú¹ş·òÂüÊ÷
 }
 
-//åˆ¤æ–­èŠ‚ç‚¹æ˜¯å¦ä¸ºå¶å­ç»“ç‚¹
+//ÅĞ¶Ï½ÚµãÊÇ·ñÎªÒ¶×Ó½áµã
 bool Huffman::IsLeaf(HFTNode* Root)
 {
     if(Root==nullptr) return false;
@@ -44,46 +44,46 @@ bool Huffman::IsLeaf(HFTNode* Root)
         return false;
 }
 
-//æ„å»ºä¸€é¢—å“ˆå¤«æ›¼æ ‘
+//¹¹½¨Ò»¿Å¹ş·òÂüÊ÷
 void Huffman::BuildTree()
 {
-    priority_queue<HFTNode> myqueue;//ä½¿ç”¨æœ€å°ä¼˜å…ˆçº§é˜Ÿåˆ—å­˜å‚¨èŠ‚ç‚¹
-    for (int i = 0; i < freq.size(); i++){//èŠ‚ç‚¹åˆå§‹åŒ–ï¼Œå¹¶å°†èŠ‚ç‚¹å‹å…¥æœ€å°ä¼˜å…ˆçº§é˜Ÿåˆ—ä¸­
+    priority_queue<HFTNode> myqueue;//Ê¹ÓÃ×îĞ¡ÓÅÏÈ¼¶¶ÓÁĞ´æ´¢½Úµã
+    for (int i = 0; i < freq.size(); i++){//½Úµã³õÊ¼»¯£¬²¢½«½ÚµãÑ¹Èë×îĞ¡ÓÅÏÈ¼¶¶ÓÁĞÖĞ
         HFTNode* temp = new HFTNode(freq[i]);
         temp->ch = i;
         myqueue.push(*temp);
     }
-    //åˆå¹¶èŠ‚ç‚¹å¹¶ç”Ÿæˆæ ‘
+    //ºÏ²¢½Úµã²¢Éú³ÉÊ÷
     while (myqueue.size() > 1) {
-        //ä»é˜Ÿåˆ—ä¸­å–å‡ºä¸¤ä¸ªæœ€å°å…ƒç´ ä½œä¸ºæ–°å­æ ‘çš„å·¦å­©å­å’Œå³å­©å­
+        //´Ó¶ÓÁĞÖĞÈ¡³öÁ½¸ö×îĞ¡ÔªËØ×÷ÎªĞÂ×ÓÊ÷µÄ×óº¢×ÓºÍÓÒº¢×Ó
         HFTNode left = myqueue.top();
         myqueue.pop();
         HFTNode right = myqueue.top();
         myqueue.pop();
-        //åˆ›å»ºæ–°å­æ ‘çš„æ ¹èŠ‚ç‚¹ï¼Œå¹¶å°†å…¶å‹å…¥é˜Ÿåˆ—ä¸­
+        //´´½¨ĞÂ×ÓÊ÷µÄ¸ù½Úµã£¬²¢½«ÆäÑ¹Èë¶ÓÁĞÖĞ
         HFTNode* parent = new HFTNode(left.weight + right.weight);
-        parent->ch = -1;//è®¾å®šå­æ ‘ç”Ÿæˆçš„æ ¹ç»“ç‚¹ä¸‹æ ‡å€¼æ˜¯-1ï¼ŒåªåšåŒºåˆ†ç”¨
+        parent->ch = -1;//Éè¶¨×ÓÊ÷Éú³ÉµÄ¸ù½áµãÏÂ±êÖµÊÇ-1£¬Ö»×öÇø·ÖÓÃ
         parent->leftchild = &left;
         parent->rightchild = &right;
         myqueue.push(*parent);
     }
-    //ç”Ÿæˆå“ˆå¤«æ›¼æ ‘çš„æ ¹ç»“ç‚¹
+    //Éú³É¹ş·òÂüÊ÷µÄ¸ù½áµã
     Root = new HFTNode();
     *Root = myqueue.top();
     myqueue.pop();
 }
 
-//æ ¹æ®å“ˆå¤«æ›¼æ ‘æ„å»ºç¼–ç è¡¨
+//¸ù¾İ¹ş·òÂüÊ÷¹¹½¨±àÂë±í
 void Huffman::BuildCode()
 {
     if (Root == nullptr) return;
     //string temp('\0');
     string temp;
-    temp.clear();//åˆå§‹åŒ–ä¸ºç©ºå­—ç¬¦ä¸²
+    temp.clear();//³õÊ¼»¯Îª¿Õ×Ö·û´®
     _build(Root, temp);
 }
 
-//è§£å‹ç¼©
+//½âÑ¹Ëõ
 string Huffman::Expend(const string& des)
 {
     string res;
@@ -115,19 +115,19 @@ string Huffman::Expend(const string& des)
     return res;
 }
 
-//å‹ç¼©
+//Ñ¹Ëõ
 string Huffman::Compress(const string& sample)
 {
     string res;
     for (int i = 0; i < sample.length(); ++i) {
 //        if (sample[i] == '\n'||sample[i]==' ')
-//            continue;ä¸éœ€è¦è·³è¿‡æ¢è¡Œå’Œç©ºæ ¼
+//            continue;²»ĞèÒªÌø¹ı»»ĞĞºÍ¿Õ¸ñ
         res += map[sample[i]];
     }
     return res;
 }
 
-//åˆ é™¤å“ˆå¤«æ›¼æ ‘
+//É¾³ı¹ş·òÂüÊ÷
 void Huffman::_del(HFTNode* root)
 {
     if (root == nullptr)
@@ -141,7 +141,7 @@ void Huffman::_del(HFTNode* root)
 void Huffman::_build(HFTNode* root, string str)
 {
     if (IsLeaf(root) && root->ch >= 0) {
-//        cout << str << "    ";//æµ‹è¯•ç¼–ç 
+//        cout << str << "    ";//²âÊÔ±àÂë
         map[st[root->ch]] = str;
         return;
     }
